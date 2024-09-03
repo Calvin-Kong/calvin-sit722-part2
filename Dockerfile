@@ -1,6 +1,6 @@
 # Dockerfile for book_catalog microservice
 # Use the official Python image as the base image
-FROM python:3.11-slim
+FROM python:3.11-alpine
 
 # assign /app as working directory in container where commands will run 
 WORKDIR /app
