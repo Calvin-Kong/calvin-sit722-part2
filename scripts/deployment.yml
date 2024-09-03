@@ -1,1 +1,38 @@
-# Write Kubernetes Deployment Script
+apiVersion: apps/v1 #The API version used in deployment resource
+kind: Deployment #This specifies the type of Kubernetes resourse, which is Deployment in this case.
+metadata: #Define the deployment name and labels
+  name: book-catalog 
+  labels:
+    app: book-catalog
+spec: #Setup the configuration for deployment
+  replicas: 1  #Number of replicas (pods) that will be run on deployment
+  selector: #This will matches the pods that belong to this deployment by label of app: book-catalog
+    matchLabels:
+      app: book-catalog
+  template: #The specification of pod
+    metadata: #Defining the pod label
+      labels:
+        app: book-catalog
+    spec: #Setup of container specifications
+      containers: #This will show the list of containers in pod, and specifies out the container name, image, port and environment variables.
+      - name: book-catalog
+        image: book_catalog:latest  
+        ports:
+        - containerPort: 8000
+        imagePullPolicy: Never
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://s217378622_sit722_part2_user:jxUlmejOdnXXNoNE8HkfOcv8lY89RxDX@dpg-crap0r3tq21c73cb2dag-a.oregon-postgres.render.com/s217378622_sit722_part2"  # Example of setting environment variables
+---
+apiVersion: v1 #The API version used in service resource
+kind: Service #This specifies the type of Kubernetes resourse, which is service.
+metadata: #The name of service
+  name: book-catalog
+spec: #The spec for service configuration
+  selector: #This matches the pods by label which is app:book-catalog
+    app: book-catalog
+  type: LoadBalancer  #This will set LoadBalancer to expose to service externally with load balancer.
+  ports: #This specifies the port that is used in this service.
+    - protocol: TCP
+      port: 8000  # External port to expose
+      targetPort: 8000  # The internal port on which the application is running
