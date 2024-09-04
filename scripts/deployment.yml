@@ -22,7 +22,7 @@ spec: #Setup the configuration for deployment
         imagePullPolicy: Never
         env:
         - name: DATABASE_URL
-          value: "postgresql://s217378622_sit722_part2_user:jxUlmejOdnXXNoNE8HkfOcv8lY89RxDX@dpg-crap0r3tq21c73cb2dag-a.oregon-postgres.render.com/s217378622_sit722_part2"  # Example of setting environment variables
+          value: "postgresql://s217378622_sit722_part2_i0na_user:OJyURxZgCiUgw1MG2PF3rLz83WgnaJv0@dpg-crc3jqjv2p9s73dlt47g-a.oregon-postgres.render.com/s217378622_sit722_part2_i0na"  # Example of setting environment variables
 ---
 apiVersion: v1 #The API version used in service resource
 kind: Service #This specifies the type of Kubernetes resourse, which is service.
@@ -31,8 +31,9 @@ metadata: #The name of service
 spec: #The spec for service configuration
   selector: #This matches the pods by label which is app:book-catalog
     app: book-catalog
-  type: LoadBalancer  #This will set LoadBalancer to expose to service externally with load balancer.
+  type: NodePort  #Set service type as nodePort to expose to service externally.
   ports: #This specifies the port that is used in this service.
     - protocol: TCP
       port: 8000  # External port to expose
       targetPort: 8000  # The internal port on which the application is running
+      nodePort: 30000
